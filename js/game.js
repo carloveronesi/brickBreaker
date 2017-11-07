@@ -18,7 +18,7 @@
 	var dx = 2;																				//Spostamento x
 	var dy = -2;																			//Spostamento y
 	//Setto la velocità Paddle
-	var ps_x = 7;																			//Spostamento x
+	var px = 7;																			//Spostamento x
 
 	//Setto paddle
 	var paddleHeight = 10;																	//Altezza Paddle
@@ -133,6 +133,7 @@
 					if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {			//Controllo se la palla è "entrata" nell'area del mattone
 						dy = -dy;																	//Rimbalzo
 						b.status = 0;																//Cancello il mattone
+						ballColor = getRandomColor();												//Cambio colore
 					}
 				}
 			}
@@ -155,17 +156,17 @@
 		y += dy;
 
 		//Rimbalzo
-		if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {			//Rim
+		if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {									//Rim
 			dx = -dx;
-			ballColor = getRandomColor();
+			ballColor = getRandomColor();																//Cambio colore
 		}
 		if(y + dy < ballRadius) {
 			dy = -dy;
 		} else if(y + dy > canvas.height-ballRadius) {
-			if(x > paddleX && x < paddleX + paddleWidth) {			//Rimbalzo sul muro superiore o il Paddle
+			if(x > paddleX && x < paddleX + paddleWidth) {												//Rimbalzo sul muro superiore o il Paddle
 				dy = -dy;
 			}
-			else {													//Game Over
+			else {																						//Game Over
 				alert("GAME OVER");
 				document.location.reload();
 			}
@@ -173,10 +174,10 @@
 
 		//Rimbalzo Paddle
 		if(rightPressed && paddleX < canvas.width-paddleWidth) {
-			paddleX += ps_x;
+			paddleX += px;
 		}
 		else if(leftPressed && paddleX > 0) {
-			paddleX -= ps_x;
+			paddleX -= px;
 		}
 
 		//Game Over
