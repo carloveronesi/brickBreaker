@@ -48,6 +48,11 @@
 		}
 	}
 
+	//Punteggio
+	var score = 0;
+	var scoreFont = "16px Arial";
+	var scoreFillStyle = "#0095DD";
+
 	//Listener tasti
 	document.addEventListener("keydown", keyDownHandler, false);
 	document.addEventListener("keyup", keyUpHandler, false);
@@ -134,10 +139,24 @@
 						dy = -dy;																	//Rimbalzo
 						b.status = 0;																//Cancello il mattone
 						ballColor = getRandomColor();												//Cambio colore
+						score++;																	//Aumento Punteggio
+					
+						//Messaggio di vittoria
+						if(score == brickRowCount*brickColumnCount) {
+							alert("YOU WIN, CONGRATULATIONS!");
+							document.location.reload();
+						}
 					}
 				}
 			}
 		}
+	}
+
+	//Stampa Punteggio
+	function drawScore() {
+		ctx.font = scoreFont;
+		ctx.fillStyle = scoreFillStyle;
+		ctx.fillText("Score: "+score, 8, 20);
 	}
 
 	//Disegno l'intera pagina
@@ -150,6 +169,8 @@
 		drawPaddle();	
 		//Attivo individuazione collisioni
 		collisionDetection();
+		//Stampo punteggio
+		drawScore();
 		
 		//Modifico variabili globali posizione
 		x += dx;	
