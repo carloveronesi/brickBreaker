@@ -29,14 +29,22 @@
 	var leftPressed = false;
 
 	//Mattoni
-	var brickRowCount = 3;
-	var brickColumnCount = 5;
-	var brickWidth = 75;
-	var brickHeight = 20;
-	var brickPadding = 10;
-	var brickOffsetTop = 30;
-	var brickOffsetLeft = 30;
+	var brickRowCount = 3;									//Numero Righe
+	var brickColumnCount = 5;								//Numero Colonne
+	var brickWidth = 75;									//Larghezza mattone
+	var brickHeight = 20;									//Altezza mattone
+	var brickPadding = 10;									//Padding mattoni
+	var brickOffsetTop = 30;								//Margine Top
+	var brickOffsetLeft = 30;								//Margine Left
 
+	//Array Mattoni
+	var bricks = [];										
+	for(c = 0; c < brickColumnCount; c++) {
+		bricks[c] = [];
+		for(r=0; r<brickRowCount; r++) {					//Inizializzo ogni mattone con x = 0, y = 0
+			bricks[c][r] = { x: 0, y: 0 };
+		}
+	}
 
 	//Listener tasti
 	document.addEventListener("keydown", keyDownHandler, false);
@@ -74,6 +82,25 @@
 		ctx.closePath();
 	}
 
+	//Disegno Mattoni
+	function drawBricks() {
+		for(c = 0; c < brickColumnCount; c++) {
+			for(r = 0; r < brickRowCount; r++) {
+				var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+				var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+				bricks[c][r].x = brickX;
+				bricks[c][r].y = brickY;
+
+				//Disegno
+				ctx.beginPath();
+				ctx.rect(brickX, brickY, brickWidth, brickHeight);
+				ctx.fillStyle = "#0095DD";
+				ctx.fill();
+				ctx.closePath();
+			}
+		}
+	}
+
 	//Ascolto Tasti
 	function keyDownHandler(e) {
 		if(e.keyCode == 39) {
@@ -97,7 +124,8 @@
 	function draw() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);						//Pulisce dai rettangoli
 		
-		//Disegno le due forme
+		//Disegno le forme
+		drawBricks();
 		drawBall();	
 		drawPaddle();	
 		
