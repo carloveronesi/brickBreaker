@@ -15,18 +15,19 @@
 	var y = canvas.height-30;
 
 	//Setto la velocità palla
-	var dx = 2;
-	var dy = -2;
+	var dx = 2;												//Spostamento x
+	var dy = -2;											//Spostamento y
 	//Setto la velocità Paddle
-	var ps_x = 10;
+	var ps_x = 10;											//Spostamento x
 
 	//Setto paddle
-	var paddleHeight = 10;
-	var paddleWidth = 75;
-	var paddleX = (canvas.width-paddleWidth)/2;
+	var paddleHeight = 10;									//Altezza Paddle
+	var paddleWidth = 75;									//Larghezza Paddle
+	var paddleX = (canvas.width-paddleWidth)/2;				//Posizione Paddle
+
 	//Pressione tasti
-	var rightPressed = false;
-	var leftPressed = false;
+	var rightPressed = false;								//Pressione tasto DX
+	var leftPressed = false;								//Pressione tasto SX
 
 	//Mattoni
 	var brickRowCount = 3;									//Numero Righe
