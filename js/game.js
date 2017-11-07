@@ -15,35 +15,36 @@
 	var y = canvas.height-30;
 
 	//Setto la velocità palla
-	var dx = 2;												//Spostamento x
-	var dy = -2;											//Spostamento y
+	var dx = 2;																				//Spostamento x
+	var dy = -2;																			//Spostamento y
 	//Setto la velocità Paddle
-	var ps_x = 10;											//Spostamento x
+	var ps_x = 7;																			//Spostamento x
 
 	//Setto paddle
-	var paddleHeight = 10;									//Altezza Paddle
-	var paddleWidth = 75;									//Larghezza Paddle
-	var paddleX = (canvas.width-paddleWidth)/2;				//Posizione Paddle
+	var paddleHeight = 10;																	//Altezza Paddle
+	var paddleWidth = 75;																	//Larghezza Paddle
+	var paddleX = (canvas.width-paddleWidth)/2;												//Posizione Paddle
 
 	//Pressione tasti
-	var rightPressed = false;								//Pressione tasto DX
-	var leftPressed = false;								//Pressione tasto SX
+	var rightPressed = false;																//Pressione tasto DX
+	var leftPressed = false;																//Pressione tasto SX
 
 	//Mattoni
-	var brickRowCount = 3;									//Numero Righe
-	var brickColumnCount = 5;								//Numero Colonne
-	var brickWidth = 75;									//Larghezza mattone
-	var brickHeight = 20;									//Altezza mattone
-	var brickPadding = 10;									//Padding mattoni
-	var brickOffsetTop = 30;								//Margine Top
-	var brickOffsetLeft = 30;								//Margine Left
+	var brickRowCount = 3;																	//Numero Righe
+	var brickColumnCount = 5;																//Numero Colonne
+	var brickWidth = 75;																	//Larghezza mattone
+	var brickHeight = 20;																	//Altezza mattone
+	var brickPadding = 10;																	//Padding mattoni
+	var brickOffsetTop = 30;																//Margine Top
+	var brickOffsetLeft = 30;																//Margine Left
+	var brickColor = "#0095DD";																//Colore 
 
 	//Array Mattoni
 	var bricks = [];										
 	for(c = 0; c < brickColumnCount; c++) {
 		bricks[c] = [];
-		for(r=0; r<brickRowCount; r++) {					//Inizializzo ogni mattone con x = 0, y = 0
-			bricks[c][r] = { x: 0, y: 0 };
+		for(r=0; r<brickRowCount; r++) {													//Inizializzo ogni mattone con x = 0, y = 0, status= 1
+			bricks[c][r] = { x: 0, y: 0, status: 1 };
 		}
 	}
 
@@ -67,11 +68,11 @@
 
 	//Disegno la Palla
 	function drawBall() {
-		ctx.beginPath();									//Creo forma
-		ctx.arc(x, y, ballRadius, 0, Math.PI*2);			//Cerchio di raggio 10, altri dati
-		ctx.fillStyle = ballColor;							//Coloro
-		ctx.fill();
-		ctx.closePath();									//Chiudo forma
+		ctx.beginPath();																	//Creo forma
+		ctx.arc(x, y, ballRadius, 0, Math.PI*2);											//Cerchio di raggio 10, altri dati
+		ctx.fillStyle = ballColor;															//Setto colore
+		ctx.fill();																			//Coloro
+		ctx.closePath();																	//Chiudo forma
 	}
 
 	//Disegno il Paddle
@@ -83,21 +84,23 @@
 		ctx.closePath();
 	}
 
-	//Disegno Mattoni
+	//Disegno i Mattoni
 	function drawBricks() {
 		for(c = 0; c < brickColumnCount; c++) {
 			for(r = 0; r < brickRowCount; r++) {
-				var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
-				var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
-				bricks[c][r].x = brickX;
-				bricks[c][r].y = brickY;
+				if(bricks[c][r].status == 1) {												//Calcolo posizione in base alle dimensioni
+					var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+					var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+					bricks[c][r].x = brickX;												//Assegno la posizione
+					bricks[c][r].y = brickY;
 
-				//Disegno
-				ctx.beginPath();
-				ctx.rect(brickX, brickY, brickWidth, brickHeight);
-				ctx.fillStyle = "#0095DD";
-				ctx.fill();
-				ctx.closePath();
+					//Disegno
+					ctx.beginPath();
+					ctx.rect(brickX, brickY, brickWidth, brickHeight);
+					ctx.fillStyle = brickColor;
+					ctx.fill();
+					ctx.closePath();
+				}
 			}
 		}
 	}
@@ -121,6 +124,21 @@
 		}
 	}
 
+	//Individuazione collisioni
+	function collisionDetection() {
+		for(c=0; c<brickColumnCount; c++) {
+			for(r=0; r<brickRowCount; r++) {
+				var b = bricks[c][r];
+				if(b.status == 1) {																	//Controllo che il mattone esista
+					if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {			//Controllo se la palla è "entrata" nell'area del mattone
+						dy = -dy;																	//Rimbalzo
+						b.status = 0;																//Cancello il mattone
+					}
+				}
+			}
+		}
+	}
+
 	//Disegno l'intera pagina
 	function draw() {
 		ctx.clearRect(0, 0, canvas.width, canvas.height);						//Pulisce dai rettangoli
@@ -129,6 +147,8 @@
 		drawBricks();
 		drawBall();	
 		drawPaddle();	
+		//Attivo individuazione collisioni
+		collisionDetection();
 		
 		//Modifico variabili globali posizione
 		x += dx;	
