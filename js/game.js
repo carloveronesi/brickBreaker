@@ -1,6 +1,7 @@
 /*
 		Impostazioni
-	*/
+*/
+
 	//Canvas
 	var canvas = document.getElementById("myCanvas");
 	var ctx = canvas.getContext("2d");
@@ -41,9 +42,9 @@
 	document.addEventListener("keydown", keyDownHandler, false);
 	document.addEventListener("keyup", keyUpHandler, false);
 
-	/*
+/*
 		Funzioni
-	*/
+*/
 
 	//Funzione che genera casualmente un colore in HEX
 	function getRandomColor() {
